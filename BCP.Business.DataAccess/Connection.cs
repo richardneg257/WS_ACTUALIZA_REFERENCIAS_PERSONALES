@@ -4,7 +4,7 @@ namespace BCP.Business.DataAccess
 {
     public class Connection
     {
-        public static string Connect(string server, string db, string user, string password, string name)
+        public static string ConnectDb(string server, string db, string user, string password, string name)
         {
             string connection = string.Empty;
             try

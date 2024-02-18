@@ -34,6 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.ConfigurationManager, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Configuration.ConfigurationManager.8.0.0\lib\net462\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -55,6 +59,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BCP.Business.DataAccess\BCP.Business.DataAccess.csproj">
+      <Project>{73F2EADD-59FE-4994-A74A-7AF958DF34B1}</Project>
+      <Name>BCP.Business.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BCP.Business.Models\BCP.Business.Models.csproj">
+      <Project>{4C911B6C-BDBB-4891-A039-EC1D2AB76A17}</Project>
+      <Name>BCP.Business.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BCP.Framework.Logs\BCP.Framework.Logs.csproj">
+      <Project>{C8A49524-1768-483B-AC35-2510DE0F1641}</Project>
+      <Name>BCP.Framework.Logs</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

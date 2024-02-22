@@ -18,39 +18,19 @@ namespace BCP.Business.DataAccess.DB
             _timeOut = timeOut;
         }
 
-        public Response GetNewClients()
+        public Response InsertNewClientsIntoPersonalReferences()
         {
             try
             {
                 List<Client> listClients = new List<Client>();
-                StoreProcedure storeProcedure = new StoreProcedure("wapi.CLIENTE_Get_All");
+                StoreProcedure storeProcedure = new StoreProcedure("bill.CLIENTE_InsertNewClientsIntoPersonalReferences");
 
                 DataTable dataTable = storeProcedure.ReturnData(_connection, _timeOut);
                 Logger.Debug("StoreProcedure: {0} DataTable: {1}", Json.ToObject(storeProcedure), Json.ToObject(dataTable));
 
                 if (storeProcedure.Error.Length <= 0)
                 {
-                    if (dataTable.Rows.Count > 0)
-                    {
-                        for (int i = 0; i < dataTable.Rows.Count; i++)
-                        {
-                            var client = new Client()
-                            {
-                                Id = (int)dataTable.Rows[i]["EMPR_NOMBRE_VC"],
-                                Nombres = dataTable.Rows[i]["EMPR_CODIGO_VC"].ToString(),
-                                ApellidoPaterno = dataTable.Rows[i]["EMPR_ABREVIACION_VC"].ToString(),
-                                ApellidoMaterno = dataTable.Rows[i]["EMPR_CORREO_VC"].ToString()
-                            };
-
-                            listClients.Add(client);
-                        }
-                        return Response.Success(listClients);
-                    }
-                    else
-                    {
-                        Logger.Error("Message: {0} DataTable: {1}", Validation.ErrorMessage(Validation.ErrorMessages.UnidentifiedBusiness), Json.ToObject(dataTable));
-                        return Response.Error(dataTable, Validation.ErrorMessages.UnidentifiedBusiness);
-                    }
+                    return Response.Success(null);
                 }
                 else
                 {

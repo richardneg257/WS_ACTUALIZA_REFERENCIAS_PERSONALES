@@ -5,13 +5,13 @@ using BCP.Framework.Logs;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
-using System.ServiceProcess;
 using System.Timers;
+using System.Windows.Forms;
+using Timer = System.Timers.Timer;
 
 namespace WS_ACTUALIZA_REFERENCIAS_PERSONALES
 {
-    public partial class ServicioEnviaReferenciasPersonales : ServiceBase
+    public partial class FrmServicioEnviaReferenciasPersonales : Form
     {
         #region Obtencion de Parametros AppConfig
 
@@ -44,39 +44,36 @@ namespace WS_ACTUALIZA_REFERENCIAS_PERSONALES
         private static Timer timerEnviaReferenciasPersonales = new Timer();
 
         #endregion
-
-        public ServicioEnviaReferenciasPersonales()
+        public FrmServicioEnviaReferenciasPersonales()
         {
             InitializeComponent();
 
-            //Inicializar los componentes de la aplicacion
-            Initialize();
-
             //Creacion timer 
-            timerEnviaReferenciasPersonales = new Timer(Interval * 60000);
-            timerEnviaReferenciasPersonales.Elapsed += new ElapsedEventHandler(CallServiceEnviaReferenciasPersonales);
+            timerEnviaReferenciasPersonales = new Timer(Interval * 10000);
+            timerEnviaReferenciasPersonales.Elapsed += CallServiceEnviaReferenciasPersonales;
             timerEnviaReferenciasPersonales.Enabled = true;
             isTimerStarted = true;
         }
 
-        protected override void OnStart(string[] args)
+        private void btnIniciar_Click(object sender, EventArgs e)
         {
             string moduleLog = "WS_ACTUALIZA_REFERENCIAS_PERSONALES.ServicioEnviaReferenciasPersonales";
             Logger.Debug(moduleLog, "/****************************** INICIA SERVICIO - ENVIA REFERENCIAS PERSONALES ***************************/");
-            EventLog.WriteEntry("LogServiceEnvioReporte", "Se inició el servicio WS_ACTUALIZA_REFERENCIAS_PERSONALES a hrs:" + DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString() + ":" + DateTime.Now.Second.ToString());
+            Logger.Debug("LogServiceEnvioReporte", "Se inició el servicio WS_ACTUALIZA_REFERENCIAS_PERSONALES a hrs:" + DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString() + ":" + DateTime.Now.Second.ToString());
+            //EventLog.WriteEntry("LogServiceEnvioReporte", "Se inició el servicio WS_ACTUALIZA_REFERENCIAS_PERSONALES a hrs:" + DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString() + ":" + DateTime.Now.Second.ToString());
             timerEnviaReferenciasPersonales.Start();
         }
 
-        protected override void OnStop()
+        private void btnFinalizar_Click(object sender, EventArgs e)
         {
-            Logger.Error("WS_ACTUALIZA_REFERENCIAS_PERSONALES.ServicioEnviaReferenciasPersonales", " SE DETUVO EL SERVICIO WINDOWS ENVIA REFERENCIAS PERSONALES ");
+
         }
 
         private void CallServiceEnviaReferenciasPersonales(object sender, ElapsedEventArgs e)
         {
             var getDate = DateTime.Now.ToString("HH:mm");
-            if (getDate.Equals(ExecutionTime))
-            {
+            //if (getDate.Equals(ExecutionTime))
+            //{
                 try
                 {
                     if (isTimerStarted)
@@ -85,13 +82,12 @@ namespace WS_ACTUALIZA_REFERENCIAS_PERSONALES
                         Initialize();
                         isTimerStarted = false;
 
-                        var clientsAll = referenciaPersonalDA.InsertNewClientsIntoPersonalReferences();
-                        if (clientsAll is null)
+                        var response = referenciaPersonalDA.InsertNewClientsIntoPersonalReferences();
+                        if (response is null)
                         {
                             Logger.Debug(moduleLog + ": NO EXISTEN NUEVOS CLIENTES EN LA BASE DE DATOS¡");
                             return;
                         }
-                        var listClients = (List<Client>)clientsAll.Data;
 
                         timerEnviaReferenciasPersonales.Start();
                         isTimerStarted = true;
@@ -110,7 +106,7 @@ namespace WS_ACTUALIZA_REFERENCIAS_PERSONALES
                     isTimerStarted = true;
                     Logger.Error(moduleLog + ": isTimerStarted: True");
                 }
-            }
+            //}
         }
 
         private void Initialize()

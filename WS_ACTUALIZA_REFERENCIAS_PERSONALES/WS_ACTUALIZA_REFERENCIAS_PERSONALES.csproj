@@ -39,6 +39,8 @@
       <HintPath>..\packages\System.Configuration.ConfigurationManager.8.0.0\lib\net462\System.Configuration.ConfigurationManager.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrmServicioEnviaReferenciasPersonales.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmServicioEnviaReferenciasPersonales.Designer.cs">
+      <DependentUpon>FrmServicioEnviaReferenciasPersonales.cs</DependentUpon>
+    </Compile>
     <Compile Include="ServicioEnviaReferenciasPersonales.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -74,6 +82,14 @@
       <Project>{C8A49524-1768-483B-AC35-2510DE0F1641}</Project>
       <Name>BCP.Framework.Logs</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FrmServicioEnviaReferenciasPersonales.resx">
+      <DependentUpon>FrmServicioEnviaReferenciasPersonales.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServicioEnviaReferenciasPersonales.resx">
+      <DependentUpon>ServicioEnviaReferenciasPersonales.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

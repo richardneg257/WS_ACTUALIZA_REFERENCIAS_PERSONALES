@@ -1,4 +1,5 @@
 ﻿using System.ServiceProcess;
+using System.Windows.Forms;
 
 namespace WS_ACTUALIZA_REFERENCIAS_PERSONALES
 {
@@ -9,12 +10,16 @@ namespace WS_ACTUALIZA_REFERENCIAS_PERSONALES
         /// </summary>
         static void Main()
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
-            {
-                new ServicioEnviaReferenciasPersonales()
-            };
-            ServiceBase.Run(ServicesToRun);
+            //ServiceBase[] ServicesToRun;
+            //ServicesToRun = new ServiceBase[]
+            //{
+            //    new ServicioEnviaReferenciasPersonales()
+            //};
+            //ServiceBase.Run(ServicesToRun);
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new FrmServicioEnviaReferenciasPersonales());
         }
     }
 }

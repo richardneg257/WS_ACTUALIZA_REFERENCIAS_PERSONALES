@@ -1,9 +1,8 @@
 ﻿using BCP.Business.DataAccess;
 using BCP.Business.DataAccess.DB;
-using BCP.Business.Models;
 using BCP.Framework.Logs;
+using BCP.Framework.Security.Managers;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Timers;
 using System.Windows.Forms;
@@ -27,6 +26,15 @@ namespace WS_ACTUALIZA_REFERENCIAS_PERSONALES
         private static readonly double Interval = double.Parse(ConfigurationManager.AppSettings.Get("IntervalTime"));
         private static readonly string ExecutionTime = ConfigurationManager.AppSettings.Get("ExecutionTime");
 
+        //Parametros para security
+        private static readonly string Security_Url = ConfigurationManager.AppSettings.Get("Security_Url");
+        private static readonly string Security_User_Name = ConfigurationManager.AppSettings.Get("Security_User_Name");
+        private static readonly string Security_Password = ConfigurationManager.AppSettings.Get("Security_Password");
+        private static readonly string Security_PublicToken = ConfigurationManager.AppSettings.Get("Security_PublicToken");
+        private static readonly string Security_IsLocal = ConfigurationManager.AppSettings.Get("Security_IsLocal");
+        private static readonly string Security_SegCryptName = ConfigurationManager.AppSettings.Get("Security_SegCryptName");
+        private static readonly string Security_AppUserId = ConfigurationManager.AppSettings.Get("Security_AppUserId");
+
         //Paramtros Logs
         private static readonly string Path_Log_File = ConfigurationManager.AppSettings.Get("Path_Log_File");
         private static readonly string Level = ConfigurationManager.AppSettings.Get("Log_Level");
@@ -38,6 +46,7 @@ namespace WS_ACTUALIZA_REFERENCIAS_PERSONALES
         string connection;
         string moduleLog = "WS_ACTUALIZA_REFERENCIAS_PERSONALES.ServiceEnviaReferenciasPersonales.CallServiceEnviaReferenciasPersonales()";
         ReferenciaPersonalDA referenciaPersonalDA;
+        SecurityManager securityManager;
         Logger logger;
         private bool isTimerStarted;
 
@@ -111,13 +120,24 @@ namespace WS_ACTUALIZA_REFERENCIAS_PERSONALES
 
         private void Initialize()
         {
+            string PasswordDescr = null;
+
             //Instancia Logger
             if (logger is null)
                 logger = new Logger(Path_Log_File + "/LogsReport.txt", Level);
 
+            //Instancia a Security Manager
+            if (securityManager == null)
+            {
+                securityManager = new SecurityManager(Security_Url, Security_User_Name, Security_Password, Security_PublicToken, Convert.ToBoolean(Security_IsLocal), Security_SegCryptName, Security_AppUserId, "WEAQ");
+                PasswordDescr = securityManager.EncryptDecrypt(false, PasswordBD);
+                //Instancia para la conexion a base de datos
+                connection = Connection.ConnectDb(ServerBD, Database, UserBD, PasswordDescr, NameBD);
+            }
+
             //Instancia para la conexion a base de datos
-            if (connection is null)
-                connection = Connection.ConnectDb(ServerBD, Database, UserBD, PasswordBD, NameBD);
+            if (connection == null)
+                connection = Connection.ConnectDb(ServerBD, Database, UserBD, PasswordDescr, NameBD);
 
             //Conexion a Referencias Personales
             if (referenciaPersonalDA is null)

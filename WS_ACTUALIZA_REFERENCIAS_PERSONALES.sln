@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BCP.Business.Models", "BCP.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{ACB9BD5F-2682-4106-A93E-3903722757EB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Security", "Security", "{F42F391F-AE6F-4EA3-BD2A-0987AA8685A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BCP.Framework.Security", "BCP.Framework.Security\BCP.Framework.Security.csproj", "{6D2C8613-138A-4722-B14E-A12037BA75EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,10 @@ Global
 		{4C911B6C-BDBB-4891-A039-EC1D2AB76A17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C911B6C-BDBB-4891-A039-EC1D2AB76A17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C911B6C-BDBB-4891-A039-EC1D2AB76A17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D2C8613-138A-4722-B14E-A12037BA75EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D2C8613-138A-4722-B14E-A12037BA75EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D2C8613-138A-4722-B14E-A12037BA75EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D2C8613-138A-4722-B14E-A12037BA75EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +64,7 @@ Global
 		{4089CD48-13AA-4FBA-8090-21FBBB4866C4} = {3CFA0256-CE21-4A87-AA5C-91C96C793DCD}
 		{C8A49524-1768-483B-AC35-2510DE0F1641} = {ADB43C72-0660-473E-875A-3D7AB1DB99B2}
 		{4C911B6C-BDBB-4891-A039-EC1D2AB76A17} = {ACB9BD5F-2682-4106-A93E-3903722757EB}
+		{6D2C8613-138A-4722-B14E-A12037BA75EF} = {F42F391F-AE6F-4EA3-BD2A-0987AA8685A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8361B912-3AE5-4DB6-8851-2055ABD95EE7}

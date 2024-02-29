@@ -56,6 +56,10 @@
       <Project>{4C911B6C-BDBB-4891-A039-EC1D2AB76A17}</Project>
       <Name>BCP.Business.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BCP.Framework.Logs\BCP.Framework.Logs.csproj">
+      <Project>{C8A49524-1768-483B-AC35-2510DE0F1641}</Project>
+      <Name>BCP.Framework.Logs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BCP.Framework\BCP.Framework.csproj">
       <Project>{4089cd48-13aa-4fba-8090-21fbbb4866c4}</Project>
       <Name>BCP.Framework</Name>

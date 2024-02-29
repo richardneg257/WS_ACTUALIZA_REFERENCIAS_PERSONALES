@@ -49,5 +49,29 @@ namespace BCP.Business.Models
             };
             return response;
         }
+
+        public static Response ValidationError(object exception, Validation.ErrorMessages errorMessages)
+        {
+            Response res = new Response
+            {
+                State = "09",
+                Message = "Error en validación. " + Validation.ErrorMessage(errorMessages),
+                Data = null,
+                Exceptions = exception
+            };
+            return res;
+        }
+
+        public static Response ValidationError(object exception)
+        {
+            Response res = new Response
+            {
+                State = "09",
+                Message = "Error en validación.",
+                Data = null,
+                Exceptions = exception
+            };
+            return res;
+        }
     }
 }

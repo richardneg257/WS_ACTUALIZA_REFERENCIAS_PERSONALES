@@ -1,8 +1,10 @@
 ﻿using BCP.Business.DataAccess;
 using BCP.Business.DataAccess.DB;
+using BCP.Business.Models;
 using BCP.Framework.Logs;
 using BCP.Framework.Security.Managers;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Timers;
 using System.Windows.Forms;
@@ -38,6 +40,8 @@ namespace WS_ACTUALIZA_REFERENCIAS_PERSONALES
         //Paramtros Logs
         private static readonly string Path_Log_File = ConfigurationManager.AppSettings.Get("Path_Log_File");
         private static readonly string Level = ConfigurationManager.AppSettings.Get("Log_Level");
+
+        private static readonly int Block = int.Parse(ConfigurationManager.AppSettings.Get("IntervalTime"));
 
         #endregion
 
@@ -83,38 +87,54 @@ namespace WS_ACTUALIZA_REFERENCIAS_PERSONALES
             var getDate = DateTime.Now.ToString("HH:mm");
             //if (getDate.Equals(ExecutionTime))
             //{
-                try
+            try
+            {
+                if (isTimerStarted)
                 {
-                    if (isTimerStarted)
+                    timerEnviaReferenciasPersonales.Stop();
+                    Initialize();
+                    isTimerStarted = false;
+
+                    // Obtener bloque de clientes
+                    var responseListClients = referenciaPersonalDA.GetNewClientsByBlock(Block);
+                    if (responseListClients is null)
                     {
-                        timerEnviaReferenciasPersonales.Stop();
-                        Initialize();
-                        isTimerStarted = false;
-
-                        var response = referenciaPersonalDA.InsertNewClientsIntoPersonalReferences();
-                        if (response is null)
-                        {
-                            Logger.Debug(moduleLog + ": NO EXISTEN NUEVOS CLIENTES EN LA BASE DE DATOS¡");
-                            return;
-                        }
-
-                        timerEnviaReferenciasPersonales.Start();
-                        isTimerStarted = true;
+                        Logger.Debug(moduleLog + ": NO EXISTEN CLIENTES NUEVOS EN LA BASE DE DATOS¡");
+                        return;
                     }
-                    else
+                    var newClients = (List<Client>)responseListClients.Data;
+
+                    // Recorrer cada cliente y buscar referencia en Infoclientes
+
+
+                    // Obtener referencia personal de la primera transacción
+
+                    // Insertar en BD si no tiene referencias personales
+
+                    var response = referenciaPersonalDA.InsertNewClientsIntoPersonalReferences();
+                    if (response is null)
                     {
-                        Logger.Error("WS_REPORTE_API_PAGO.ServiceEnvioReporte", "Revisar! isTimerStarted: false");
+                        Logger.Debug(moduleLog + ": NO EXISTEN NUEVOS CLIENTES EN LA BASE DE DATOS¡");
+                        return;
                     }
 
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(moduleLog + ": Exception: " + ex.Message);
-                    //Start servicio PRUEBA
                     timerEnviaReferenciasPersonales.Start();
                     isTimerStarted = true;
-                    Logger.Error(moduleLog + ": isTimerStarted: True");
                 }
+                else
+                {
+                    Logger.Error("WS_REPORTE_API_PAGO.ServiceEnvioReporte", "Revisar! isTimerStarted: false");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(moduleLog + ": Exception: " + ex.Message);
+                //Start servicio PRUEBA
+                timerEnviaReferenciasPersonales.Start();
+                isTimerStarted = true;
+                Logger.Error(moduleLog + ": isTimerStarted: True");
+            }
             //}
         }
 
